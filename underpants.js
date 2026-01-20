@@ -21,6 +21,7 @@ var _ = {};
 *   _.identity({a: "b"}) === {a: "b"}
 */
 
+_.identity = (val) => {return val};
 
 /** _.typeOf
 * Arguments:
@@ -42,6 +43,17 @@ var _ = {};
 * _.typeOf([1,2,3]) -> "array"
 */
 
+_.typeOf = function (val) {
+    if (typeof val !== 'object') {
+        return typeof val
+    } else if (Array.isArray(val)) {
+        return 'array'
+    } else if (val === null) {
+        return 'null'
+    } else {
+        return 'object'
+    }
+}
 
 /** _.first
 * Arguments:
@@ -61,6 +73,29 @@ var _ = {};
 *   _.first(["a", "b", "c"], 2) -> ["a", "b"]
 */
 
+_.first = function (arr, num) {
+    if (!Array.isArray(arr)) {return []}
+
+    if (!num) {
+        return arr[0]
+    } else if (num >= arr.length) {
+        let home = [];
+
+        for (let x = 0; x < arr.length; x++) {
+            home.push(arr[x])
+        }
+
+        return home
+    } else {
+        let home = [];
+
+        for (let x = 0; x < num; x++) {
+            home.push(arr[x])
+        }
+
+        return home
+    }
+}
 
 /** _.last
 * Arguments:
@@ -80,23 +115,59 @@ var _ = {};
 *   _.last(["a", "b", "c"], 2) -> ["b", "c"]
 */
 
+_.last = function (arr, num) {
+    if (!Array.isArray(arr) || num < 0) {return []};
+
+    if (!num || typeof num !== 'number') {
+        return arr[arr.length - 1]
+    } else if (num >= arr.length) {
+        let home = [];
+
+        for (let x = 0; x < arr.length; x++) {
+            home.push(arr[x])
+        }
+
+        return home
+    } else {
+        let home = [];
+
+        for (let x = num - 1; x < arr.length; x++) {
+            home.push(arr[x])
+        }
+
+        return home
+    }
+}
 
 /** _.indexOf
 * Arguments:
 *   1) An array
 *   2) A value
 * Objectives:
-*   1) Return the index of <array> that is the first occurrance of <value>
+*   1) Return the index of <array> that is the first occurrance"(sic)" of <value>
 *   2) Return -1 if <value> is not in <array>
 *   3) Do not use [].indexOf()!
 * Edge Cases:
 *   1) What if <array> has multiple occurances of val?
-*   2) What if <val> isn't in <array>?
+*   2) What if <val> isn't in <array>? "see objective 2"
 * Examples:
 *   _.indexOf(["a","b","c"], "c") -> 2
 *   _.indexOf(["a","b","c"], "d") -> -1
 */
 
+_.indexOf = function(arr, val) {
+    let home = []
+    
+    for (let x = 0; x < arr.length; x++) {
+        if (arr[x] === val) {
+            return x
+        }
+    }
+
+    if (home.length === 0) {return -1}
+
+    return home.length
+}
 
 /** _.contains
 * Arguments:
@@ -113,6 +184,17 @@ var _ = {};
 *   _.contains([1,"two", 3.14], "two") -> true
 */
 
+_.contains = function(arr, val) {
+    if (!val || arr.length === 0) {return false}
+    
+    for (let x = 0; x < arr.length; x++) {
+        if (arr[x] === val) {
+            return true
+        }
+    }
+
+    return false
+}
 
 /** _.each
 * Arguments:
@@ -130,6 +212,16 @@ var _ = {};
 *      -> should log "a" "b" "c" to the console
 */
 
+_.each = function (coll, func) {    
+    if(Array.isArray(coll)) {
+        for(let x = 0; x < coll.length; x++) {
+            func(coll[x], x, coll)
+        }
+
+    } else {
+        func(coll.key(coll), coll.key, coll)
+    }
+}
 
 /** _.unique
 * Arguments:
@@ -141,6 +233,19 @@ var _ = {};
 *   _.unique([1,2,2,4,5,6,5,2]) -> [1,2,4,5,6]
 */
 
+_.unique = function (arr) {
+    let home = []
+    
+    for (let x = 0; x < arr.length; x++) {
+        for (let y = 0; y < arr.length; y++) {
+            if (arr[x] === arr[y]) {
+                home.push(arr[x])
+            }
+        }
+    }
+
+    return home
+}
 
 /** _.filter
 * Arguments:
@@ -158,6 +263,19 @@ var _ = {};
 *   use _.each in your implementation
 */
 
+_.filter = function (arr, func) {
+    let home = []
+    
+    for (let x = 0; x < arr.length; x++) {
+        if (func(arr[x], x, arr)) {
+            home.push(arr[x])
+        } else {
+            continue
+        }
+    }
+    
+    return home
+}
 
 /** _.reject
 * Arguments:
@@ -172,6 +290,19 @@ var _ = {};
 *   _.reject([1,2,3,4,5], function(e){return e%2 === 0}) -> [1,3,5]
 */
 
+_.reject = function (arr, func) {
+    let home = []
+    
+    for (let x = 0; x < arr.length; x++) {
+        if (!func(arr[x], x, arr)) {
+            home.push(arr[x])
+        } else {
+            continue
+        }
+    }
+    
+    return home
+}
 
 /** _.partition
 * Arguments:
@@ -192,6 +323,15 @@ var _ = {};
 }
 */
 
+_.partition = function (arr, func) {
+    let home = []
+    
+    for (let x = 0; x < arr.length; x++) {
+        for (let y = 0; y < arr.length; y++) {
+
+        }
+    }
+}
 
 /** _.map
 * Arguments:
@@ -209,6 +349,19 @@ var _ = {};
 *   _.map([1,2,3,4], function(e){return e * 2}) -> [2,4,6,8]
 */
 
+_.map = function(collection, func) {
+    let home = [];
+    
+    if (Array.isArray(collection)) {
+        for (let x = 0; x < collection.length; x++) {
+            let result = func(collection[x], x, collection)
+        }
+    } else {
+        for (let key in collection) {
+            let result = func(collection[key], key, collection)
+        }
+    }
+}
 
 /** _.pluck
 * Arguments:
@@ -285,6 +438,8 @@ var _ = {};
 *   _.reduce([1,2,3], function(previousSum, currentValue, currentIndex){ return previousSum + currentValue }, 0) -> 6
 */
 
+
+// [4, 3, 2, 1].reduce((x, n) => x + n, 0)
 
 /** _.extend
 * Arguments:
